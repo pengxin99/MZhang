@@ -571,7 +571,7 @@ if __name__ == '__main__':
     # print("train_y : " + str(train_y))
     # print("test_y : " + str(test_y))
 
-    layers_dims = [30000, 20, 7, 5, 1]  # 5-layer model
+    layers_dims = [30000, 200, 70, 5, 1]  # 5-layer model
     parameters = L_layer_model(train_x, train_y, layers_dims, num_iterations=1000, print_cost=True)
 
     # print(parameters)

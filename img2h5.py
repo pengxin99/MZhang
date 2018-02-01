@@ -21,6 +21,57 @@ import os.path
 #     print(f[key].value)
 #     print(type(f[key].value))
 
+# This is the function introduction of imread():
+"""
+    Read an image from a file as an array.
+
+    Parameters
+    ----------
+    name : str or file object
+        The file name or file object to be read.
+    flatten : bool, optional
+        If True, flattens the color layers into a single gray-scale layer.
+    mode : str, optional
+        Mode to convert image to, e.g. ``'RGB'``.  See the Notes for more
+        details.
+
+    Returns
+    -------
+    imread : ndarray
+        The array obtained by reading the image.
+
+    Notes
+    -----
+    `imread` uses the Python Imaging Library (PIL) to read an image.
+    The following notes are from the PIL documentation.
+
+    `mode` can be one of the following strings:
+
+    * 'L' (8-bit pixels, black and white)
+    * 'P' (8-bit pixels, mapped to any other mode using a color palette)
+    * 'RGB' (3x8-bit pixels, true color)
+    * 'RGBA' (4x8-bit pixels, true color with transparency mask)
+    * 'CMYK' (4x8-bit pixels, color separation)
+    * 'YCbCr' (3x8-bit pixels, color video format)
+    * 'I' (32-bit signed integer pixels)
+    * 'F' (32-bit floating point pixels)
+
+    PIL also provides limited support for a few special modes, including
+    'LA' ('L' with alpha), 'RGBX' (true color with padding) and 'RGBa'
+    (true color with premultiplied alpha).
+
+    When translating a color image to black and white (mode 'L', 'I' or
+    'F'), the library uses the ITU-R 601-2 luma transform::
+
+        L = R * 299/1000 + G * 587/1000 + B * 114/1000
+
+    When `flatten` is True, the image is converted using mode 'F'.
+    When `mode` is not None and `flatten` is True, the image is first
+    converted according to `mode`, and the result is then flattened using
+    mode 'F'.
+
+    """
+
 
 
 def resizePic(inpath,outpath,num = 100, width = 100, height = 100):
@@ -54,7 +105,7 @@ def pic_2_h5(filename,picfile_path,label = True,num = 200):
         print(str(i) + '\n')
         pic_name = picfile_path + "/" + str(i) + ".jpg"
 
-        image = np.array(ndimage.imread(pic_name, flatten=False))
+        image = np.array(ndimage.imread(pic_name, flatten=False, mode= 'L'))
         # num_px = image.shape[0]
         # num_py = image.shape[1]
         # my_image = scipy.misc.imresize(image, size=(num_px, num_py)).reshape((num_px * num_py * 3, 1))
@@ -87,6 +138,6 @@ if __name__ == '__main__':
     # pic_2_h5("test_mdvsnmd", "testPic_resize")
 
     # resizePic("test_set_pic", "test_set_pic_resize", num=11, width=100, height=100)
-    pic_2_h5("train_set_all", "train_set_yesAndno",num=400)
+    pic_2_h5("train_set_all_MODE_L", "train_set_yesAndno",num=400)
 
     print("\n\nEND!")

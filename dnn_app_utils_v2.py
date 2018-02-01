@@ -432,7 +432,11 @@ def print_mislabeled_images(classes, X, y, p):
         index = mislabeled_indices[1][i]
         
         plt.subplot(2, num_images, i + 1)
-        plt.imshow(X[:,index].reshape(100,100,3), interpolation='nearest')
+
+        # 为了不同模式，图片大小不一样而改变
+        # plt.imshow(X[:,index].reshape(100,100,3), interpolation='nearest')
+        plt.imshow(X[:,index].reshape(100,100,1), interpolation='nearest')
+
         plt.axis('off')
         # plt.title("Prediction: " + classes[int(p[0,index])].decode("utf-8") + " \n Class: " + classes[y[0,index]].decode("utf-8"))
 

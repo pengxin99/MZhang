@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import os
+from PIL import Image
 
 print(cv2.__version__)
 
@@ -9,14 +10,21 @@ def video2frame(videopath,videoname):
     vidcap = cv2.VideoCapture(video)                # 使用VideoCapture() 函数进行视频帧捕获
     print(vidcap.isOpened())
     success, image = vidcap.read()                  # 读取捕获的每一帧，如果有帧率，返回 True 和 该帧图像
+    success, image = vidcap.read()                  # 读取捕获的每一帧，如果有帧率，返回 True 和 该帧图像
     count = 0
+    imgsave_sum = 0
     success = True
     while success:
         success, image = vidcap.read()
-        print('Read a new frame: %d' % count, success)
-        framename = videoname + "_" + "%d.jpg" %(count)     # 自定以帧的保存格式
-        savepath = videopath + 'frames/'                    # 保存路径设置
-        cv2.imwrite(savepath+framename, image)              # 保存路径和帧名字组合，可以将截取的帧保存到指定位置
+        print('Read a new frame: %d' % imgsave_sum, success)
+        if count % 2 == 0 :                                           # 每两帧保存一帧图像
+            imgsave_sum += 1
+            framename = videoname + "_" + "%d.jpg" %(imgsave_sum)     # 自定以帧的保存格式
+            savepath = videopath + 'frames/'                    # 保存路径设置
+            # img_resize = image.resize((100, 100), Image.ANTIALIAS)    # resize image with high-quality
+            # 此处先将image从 array 转到 img，进行resize操作； 然后再从img 转到 array ，进行imwrite操作
+            img_resize = Image.fromarray(image).resize((100, 100), Image.ANTIALIAS)    # resize image with high-quality
+            cv2.imwrite(savepath+framename, np.array(img_resize))              # 保存路径和帧名字组合，可以将截取的帧保存到指定位置
         count += 1
         
 if __name__ == '__main__':
@@ -26,7 +34,7 @@ if __name__ == '__main__':
         print(dir + "\tvideo number is:" +str(dirsum))
         for i in range(dirsum):                        # 依次处理文件夹下面的视频，做提取帧
             videopath = "./" + dir + "/"               # 生成视频存储路径
-            videoname = dir + str(i)                   # 生成视频名字，为后续处理具体视频做铺垫
+            videoname = dir + str(i+1)                   # 生成视频名字，为后续处理具体视频做铺垫
             video2frame(videopath = videopath, videoname = videoname)
     # video2frame("./right/right1.mp4")
 

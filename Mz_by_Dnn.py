@@ -21,7 +21,7 @@ def load_data(train_filename,test_filename):
     # test_set_y_orig = np.array(test_dataset["train_set_y"][:])  # your test set labels
 
 
-##########################从测试集中分离20%作为验证集
+########################## 从测试集中分离20%作为验证集
     train_dataset = h5py.File(train_filename, "r")
     train_set_x_orig = np.array(np.concatenate((train_dataset["train_set_x"][:190],train_dataset["train_set_x"][200:390]),axis = 0))  # your train set features
     train_set_y_orig = np.array(np.concatenate((train_dataset["train_set_y"][:190],train_dataset["train_set_y"][200:390]),axis = 0))  # your train set labels
@@ -29,7 +29,7 @@ def load_data(train_filename,test_filename):
     test_dataset = h5py.File(test_filename, "r")
     test_set_x_orig = np.array(np.concatenate((test_dataset["train_set_x"][190:200],test_dataset["train_set_x"][390:400]),axis = 0))  # your test set features
     test_set_y_orig = np.array(np.concatenate((test_dataset["train_set_y"][190:200],test_dataset["train_set_y"][390:400]),axis = 0))  # your test set labels
-########################3
+########################
 
 
     # classes = np.array(test_dataset["list_classes"][:])  # the list of classes

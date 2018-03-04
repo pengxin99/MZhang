@@ -5,14 +5,19 @@ from PIL import Image
 
 print(cv2.__version__)
 
+
 def video2frame(videopath,videoname):
+    """
+    Parameters
+        ----------
+        videopath : 视频存放路径
+        videoname : 视频名字，用来找到具体的视频
+    """
     video = videopath + videoname + ".mp4"          # 找到具体的视频
     print("start ***********" + video)
     vidcap = cv2.VideoCapture(video)                # 使用VideoCapture() 函数进行视频帧捕获
     print(vidcap.isOpened())
     success, image = vidcap.read()                  # 读取捕获的每一帧，如果有帧率，返回 True 和 该帧图像
-    success, image = vidcap.read()                  # 读取捕获的每一帧，如果有帧率，返回 True 和 该帧图像
-    # success, image = vidcap.read()                  # 读取捕获的每一帧，如果有帧率，返回 True 和 该帧图像
 
     count = 0
     imgsave_sum = 0
@@ -43,11 +48,9 @@ if __name__ == '__main__':
     for dir in dirlist:                         # 统计每一类文件夹中视频个数
         dirsum = len(os.listdir("./" + dir))    # os.listdir(path)语句
         print(dir + "\tvideo number is:" +str(dirsum))
-        for i in range(dirsum):                        # 依次处理文件夹下面的视频，做提取帧
-            
-            videopath = "./" + dir + "/"               # 生成视频存储路径
-            videoname = dir + str(i + 1)                   # 生成视频名字，为后续处理具体视频做铺垫
+        for i in range(dirsum):                             # 依次处理文件夹下面的视频，做提取帧
+            videopath = "./" + dir + "/"                    # 生成视频存储路径
+            videoname = dir + str(i + 1)                    # 生成视频名字，为后续处理具体视频做铺垫
             video2frame(videopath = videopath, videoname = videoname)
-    # video2frame("./right/right1.mp4")
 
 

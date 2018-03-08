@@ -13,7 +13,7 @@ class Softmax(object):
 
     def __init__(self):
         self.learning_step = 0.0001           # 学习速率
-        self.max_iteration = 100000             # 最大迭代次数
+        self.max_iteration = 1000000          # 最大迭代次数
         self.weight_lambda = 0.01               # 衰退权重
 
     def cal_e(self,x,l):
@@ -51,7 +51,7 @@ class Softmax(object):
         result = np.dot(self.w,x)
         row, column = result.shape
         
-        print(result)
+        # print(result)
         # 找最大值所在的列
         _positon = np.argmax(result)
         m, n = divmod(_positon, column)             # 除法，返回除数和余数
@@ -62,10 +62,12 @@ class Softmax(object):
         self.k = len(set(labels))                   # set(labels)集合，将labels依次加入集合中
         self.w = np.zeros((self.k,len(features[0])+1))      # 初始化权重矩阵为0
         time = 0
-
+        
+        train_predict = []
+        score = []
+        
         while time < self.max_iteration:
-            print('loop %d' % time)
-            time += 1
+            
             index = random.randint(0, len(labels) - 1)      # 每次随机一个index，即随机取出一个样本进行梯度下降，应该为 SGD
 
             x = features[index]
@@ -79,7 +81,19 @@ class Softmax(object):
 
             for j in range(self.k):
                 self.w[j] -= self.learning_step * derivatives[j]
-                
+
+            
+            
+            if time % 10000 == 0:
+                pre = p.predict(features)
+                sco = accuracy_score(labels, pre)
+                print('loop %d' % time)
+                print("after %d loop ,the train acc score is :%f" % (time, sco))
+            time += 1
+            
+            train_predict.append(pre)
+            score.append(pre)
+            
         print("the weight is :" + str(self.w))
         
     def predict(self,features):
@@ -160,8 +174,6 @@ if __name__ == '__main__':
     # print("train_y's shape: " + str(train_y_flatten.shape))
     # print("test_y's shape: " + str(test_y_flatten.shape))
     
-
-
 
     time_2 = time.time()
     print('read data cost '+ str(time_2 - time_1)+' second')

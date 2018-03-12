@@ -7,13 +7,13 @@ import h5py
 
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
-import matplotlib.pyplot as plt
+from util import *
 
 class Softmax(object):
 
     def __init__(self):
         self.learning_step = 0.0001           # 学习速率
-        self.max_iteration = 100000         # 最大迭代次数
+        self.max_iteration = 1000000         # 最大迭代次数
         self.weight_lambda = 0.01               # 衰退权重
 
     def cal_e(self,x,l):
@@ -115,15 +115,15 @@ def load_data(train_filename,test_filename):
     train = int(x * 0.9)
     test = x - train
     
-    train_set_x_orig = np.array(np.concatenate((train_dataset["train_set_x"][:1500],train_dataset["train_set_x"][1700:3200],
-                                                train_dataset["train_set_x"][3400:4700]),axis = 0))
-    train_set_y_orig = np.array(np.concatenate((train_dataset["train_set_y"][:1500],train_dataset["train_set_y"][1700:3200],
-                                                train_dataset["train_set_y"][3400:4700]),axis = 0))
+    train_set_x_orig = np.array(np.concatenate((train_dataset["train_set_x"][:900],train_dataset["train_set_x"][1000:1900],
+                                                train_dataset["train_set_x"][2000:2900]),axis = 0))
+    train_set_y_orig = np.array(np.concatenate((train_dataset["train_set_y"][:900],train_dataset["train_set_y"][1000:1900],
+                                                train_dataset["train_set_y"][2000:2900]),axis = 0))
     test_dataset = h5py.File(test_filename, "r")
-    test_set_x_orig = np.array(np.concatenate((test_dataset["train_set_x"][1500:1700],test_dataset["train_set_x"][3200:3400],
-                                               test_dataset["train_set_x"][4700:]),axis = 0))  # your test set features
-    test_set_y_orig = np.array(np.concatenate((test_dataset["train_set_y"][1500:1700],test_dataset["train_set_y"][3200:3400],
-                                               test_dataset["train_set_y"][4700:]),axis = 0)) # your test set labels
+    test_set_x_orig = np.array(np.concatenate((test_dataset["train_set_x"][900:1000],test_dataset["train_set_x"][1900:2000],
+                                               test_dataset["train_set_x"][2900:]),axis = 0))  # your test set features
+    test_set_y_orig = np.array(np.concatenate((test_dataset["train_set_y"][900:1000],test_dataset["train_set_y"][1900:2000],
+                                               test_dataset["train_set_y"][2900:]),axis = 0)) # your test set labels
     ########################
 
     train_set_y_orig = train_set_y_orig.reshape((1, train_set_y_orig.shape[0]))
@@ -132,36 +132,6 @@ def load_data(train_filename,test_filename):
     return train_set_x_orig, train_set_y_orig, test_set_x_orig, test_set_y_orig
 
 
-def print_mislabeled_images( X, y, p):
-    """
-    Plots images where predictions and truth were different.
-    X -- dataset
-    y -- true labels
-    p -- predictions
-    """
-    # 将y和p变为array格式，方便处理
-    y = np.asarray(y)
-    p = np.asarray(p)
-    mislabeled_indices = np.asarray(np.where(y != p))       # 找到预测结果和实际结果不同的测试样本的索引
-    print("mislabeled_indices.shape is : " + str(mislabeled_indices.shape))
-    plt.rcParams['figure.figsize'] = (40.0, 40.0)  # set default size of plots
-    num_images = len(mislabeled_indices[0])
-    for i in range(num_images):
-        index = i
-        print("the pic size is: " + str(X[index, :].shape))
-        print(type(X[index, :].shape))
-
-        plt.subplot(4, num_images/4, i + 1)         # 分5行显示
-        
-        # 为了不同模式，图片大小不一样而改变
-        # plt.imshow(X[:,index].reshape(100,100,3), interpolation='nearest')
-        plt.imshow(X[index, :].reshape(100, 100))
-        
-        plt.axis('off')
-        # plt.title("Prediction: " + classes[int(p[0,index])].decode("utf-8") + " \n Class: " + classes[y[0,index]].decode("utf-8"))
-        
-        plt.hold
-    plt.show()
 
 if __name__ == '__main__':
     

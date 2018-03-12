@@ -4,7 +4,8 @@ import math
 import random
 import time
 import h5py
- 
+from util import *
+
 def scale_n(x):
     return x
     #return (x-x.mean(axis=0))/(x.std(axis=0)+1e-10)
@@ -138,21 +139,20 @@ def load_data(train_filename, test_filename):
     x, y, z = train_dataset["train_set_x"].shape
     train = int(x * 0.9)
     test = x - train
-    
+
     train_set_x_orig = np.array(
-        np.concatenate((train_dataset["train_set_x"][:1500], train_dataset["train_set_x"][1700:3200],
-                        train_dataset["train_set_x"][3400:4700]), axis=0))
+        np.concatenate((train_dataset["train_set_x"][:900], train_dataset["train_set_x"][1000:1900],
+                        train_dataset["train_set_x"][2000:2900]), axis=0))
     train_set_y_orig = np.array(
-        np.concatenate((train_dataset["train_set_y"][:1500], train_dataset["train_set_y"][1700:3200],
-                        train_dataset["train_set_y"][3400:4700]), axis=0))
-    
+        np.concatenate((train_dataset["train_set_y"][:900], train_dataset["train_set_y"][1000:1900],
+                        train_dataset["train_set_y"][2000:2900]), axis=0))
     test_dataset = h5py.File(test_filename, "r")
     test_set_x_orig = np.array(
-        np.concatenate((test_dataset["train_set_x"][1500:1700], test_dataset["train_set_x"][3200:3400],
-                        test_dataset["train_set_x"][4700:]), axis=0))  # your test set features
+        np.concatenate((test_dataset["train_set_x"][900:1000], test_dataset["train_set_x"][1900:2000],
+                        test_dataset["train_set_x"][2900:]), axis=0))  # your test set features
     test_set_y_orig = np.array(
-        np.concatenate((test_dataset["train_set_y"][1500:1700], test_dataset["train_set_y"][3200:3400],
-                        test_dataset["train_set_y"][4700:]), axis=0))  # your test set labels
+        np.concatenate((test_dataset["train_set_y"][900:1000], test_dataset["train_set_y"][1900:2000],
+                        test_dataset["train_set_y"][2900:]), axis=0))  # your test set labels
     ########################
     
     train_set_y_orig = train_set_y_orig.reshape((1, train_set_y_orig.shape[0]))
@@ -195,5 +195,7 @@ if __name__=="__main__":
     b = predict_test_y != test_y
  
     error_test = np.sum(b, axis=0)/float(b.size)
- 
+    
     print("Train Error rate = %.4f, \nTest Error rate = %.4f\n" % (error_train, error_test))
+
+    print_mislabeled_images(test_X, test_y, predict_test_y)

@@ -124,12 +124,7 @@ def pic_2_h5(filename,picfile_path,label = True,num = 200):
 
     dset1 = f.create_dataset("train_set_x", data = data)
     dset2 = f.create_dataset("train_set_y", data = labels)
-    '''
-     for key in f.keys():
-        print(f[key].name)
-        print(f[key].value)
-        print(type(f[key].value))
-    '''
+ 
 
 
 if __name__ == '__main__':

@@ -4,6 +4,7 @@ import numpy as np
 import random
 import time
 import h5py
+import matplotlib.pyplot as plt
 
 
 def cal_e(x, l, ws):
@@ -61,3 +62,36 @@ def softmax_backward(features, labels, ws):
         derivatives.append(derivative)
     
     return np.sum(abs(derivatives)) / sum_train
+
+
+def print_mislabeled_images(X, y, p):
+    """
+    Plots images where predictions and truth were different.
+    X -- dataset
+    y -- true labels
+    p -- predictions
+    """
+    # 将y和p变为array格式，方便处理
+    y = np.asarray(y)
+    p = np.asarray(p)
+    mislabeled_indices = np.asarray(np.where(y != p))  # 找到预测结果和实际结果不同的测试样本的索引
+    print("mislabeled_indices.shape is : " + str(mislabeled_indices.shape))
+    print("mislabeled_indices is : " + str(mislabeled_indices))
+    plt.rcParams['figure.figsize'] = (40.0, 40.0)  # set default size of plots
+    num_images = len(mislabeled_indices[0])
+    for i in range(num_images):
+        index = mislabeled_indices[0][i]
+        # print("the pic size is: " + str(X[index, :].shape))
+        # print(type(X[index, :].shape))
+        
+        plt.subplot(4, num_images / 4 + 1, i + 1)  # 分5行显示
+        
+        # 为了不同模式，图片大小不一样而改变
+        # plt.imshow(X[:,index].reshape(100,100,3), interpolation='nearest')
+        plt.imshow(X[index].reshape(100, 100))
+        
+        plt.axis('off')
+        plt.title("Prediction: " + str(p[index]) + " \n Class: " + str(y[index]))
+        
+        plt.hold
+    plt.show()

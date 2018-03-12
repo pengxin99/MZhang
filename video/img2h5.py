@@ -100,8 +100,8 @@ def pic_2_h5(filename,picfile_path,label = True,num = 200):
     frame_labels = {'left':0, 'midle':1, 'right':2}
     
     # 读取3种类别的图片，依次读取1600张，存入sets_x、sets_y矩阵
-    dirlist = ['left', 'midle', 'right']  # 三类视频文件夹名称
-    for dir in dirlist:  # 统计每一类文件夹中视频个数
+    dirlist = ['left', 'midle', 'right']                        # 三类视频文件夹名称
+    for dir in dirlist:                                         # 统计每一类文件夹中视频个数
         frame_path = picfile_path + dir + "/frames/"
         frames = []
         
@@ -113,7 +113,7 @@ def pic_2_h5(filename,picfile_path,label = True,num = 200):
                     frames.append(file)
         
         for frame in frames:
-            image = np.array(ndimage.imread(frame_path+frame, flatten=False, mode= 'L'))
+            image = np.array(ndimage.imread(frame_path+frame, flatten=False, mode='L'))
             sets_x.append(image)
             sets_y.append(frame_labels[dir])
             if frame_labels[dir] == 1 :

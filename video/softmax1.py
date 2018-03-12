@@ -161,6 +161,9 @@ def load_data(train_filename, test_filename):
     return train_set_x_orig, train_set_y_orig, test_set_x_orig, test_set_y_orig
 
 
+
+    
+    
 if __name__=="__main__":
     
     train_filename = "MultiLabel_data_right.h5"
@@ -173,8 +176,8 @@ if __name__=="__main__":
     test_y = test_labels.reshape(test_labels.shape[0], -1)[0]
     
     # Standardize data to have feature values between 0 and 1.
-    train_X = train_X / 255.
-    test_X = test_X / 255.
+    train_X = train_X/255.
+    test_X = test_X/255.
 
     l_model = SoftMaxModel()
  

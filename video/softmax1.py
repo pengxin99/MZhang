@@ -91,7 +91,7 @@ class SoftMaxModel(object):
                         
              
         self.theta = theta
-        print (theta,loop_num)
+        print(theta, loop_num)
  
     def train_scipy(self,X,y):
         m,n = X.shape

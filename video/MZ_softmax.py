@@ -9,11 +9,14 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from util import *
 
+import matplotlib.pyplot as plt
+
+
 class Softmax(object):
 
     def __init__(self):
         self.learning_step = 0.0001           # 学习速率
-        self.max_iteration = 1000000         # 最大迭代次数
+        self.max_iteration = 300000         # 最大迭代次数
         self.weight_lambda = 0.01               # 衰退权重
 
     def cal_e(self,x,l):
@@ -93,6 +96,23 @@ class Softmax(object):
             score.append(pre)
             
         print("the weight is :" + str(self.w))
+        
+        # 可视化画出3种不同类别学习到的权重值
+        print(self.w[0, :-1].shape)
+        plt.subplot(1,3,1)
+        number = 0
+        plt.imshow(self.w[number, :-1].reshape([100, 100]), cmap='gray')
+        plt.hold
+        plt.subplot(1, 3, 2)
+        number = 1
+        plt.imshow(self.w[number, :-1].reshape([100, 100]), cmap='gray')
+        plt.hold
+        plt.subplot(1, 3, 3)
+        number = 2
+        plt.imshow(self.w[ number, :-1].reshape([100, 100]), cmap='gray')
+        plt.hold
+        
+        plt.show()
         
     def predict(self,features):
         labels = []

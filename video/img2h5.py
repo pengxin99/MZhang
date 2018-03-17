@@ -114,6 +114,8 @@ def pic_2_h5(filename,picfile_path,label = True,num = 200):
         
         for frame in frames:
             image = np.array(ndimage.imread(frame_path+frame, flatten=False, mode='L'))
+            image = image.reshape(1,100,100)            # 此处reshape，因为后续使用keras、cnn时，需要有图片的通道信息
+            print(image.shape)
             sets_x.append(image)
             sets_y.append(frame_labels[dir])
             if frame_labels[dir] == 1 :

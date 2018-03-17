@@ -95,3 +95,31 @@ def print_mislabeled_images(X, y, p):
         
         plt.hold
     plt.show()
+
+
+def load_data(train_filename, test_filename):
+    ########################## 从测试集中分离10%作为验证集
+    train_dataset = h5py.File(train_filename, "r")
+    x, dim, y, z = train_dataset["train_set_x"].shape
+    train = int(x * 0.9)
+    test = x - train
+    
+    train_set_x_orig = np.array(
+        np.concatenate((train_dataset["train_set_x"][:900], train_dataset["train_set_x"][1000:1900],
+                        train_dataset["train_set_x"][2000:2900]), axis=0))
+    train_set_y_orig = np.array(
+        np.concatenate((train_dataset["train_set_y"][:900], train_dataset["train_set_y"][1000:1900],
+                        train_dataset["train_set_y"][2000:2900]), axis=0))
+    test_dataset = h5py.File(test_filename, "r")
+    test_set_x_orig = np.array(
+        np.concatenate((test_dataset["train_set_x"][900:1000], test_dataset["train_set_x"][1900:2000],
+                        test_dataset["train_set_x"][2900:]), axis=0))  # your test set features
+    test_set_y_orig = np.array(
+        np.concatenate((test_dataset["train_set_y"][900:1000], test_dataset["train_set_y"][1900:2000],
+                        test_dataset["train_set_y"][2900:]), axis=0))  # your test set labels
+    ########################
+    
+    train_set_y_orig = train_set_y_orig.reshape((1, train_set_y_orig.shape[0]))
+    test_set_y_orig = test_set_y_orig.reshape((1, test_set_y_orig.shape[0]))
+    
+    return train_set_x_orig, train_set_y_orig, test_set_x_orig, test_set_y_orig

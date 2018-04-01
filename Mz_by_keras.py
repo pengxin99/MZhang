@@ -14,7 +14,7 @@ import pydot
 from IPython.display import SVG
 from keras.utils.vis_utils import model_to_dot
 from keras.utils import plot_model
-from kt_utils import *
+from util import *
 
 import keras.backend as K
 K.set_image_data_format('channels_last')

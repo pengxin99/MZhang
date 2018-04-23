@@ -33,7 +33,7 @@ def video2frame(videopath,videoname):
             # 此处先将image从 array 转到 img，进行resize操作； 然后再从img 转到 array ，进行imwrite操作
             # 遇到错误选择跳过 继续后续执行
             try:
-                img_resize = Image.fromarray(image).resize((100, 100),
+                img_resize = Image.fromarray(image).resize((64, 64),
                                                            Image.ANTIALIAS)  # resize image with high-quality
             except AttributeError:
                 print(" 'NoneType' object has no attribute '__array_interface__'")

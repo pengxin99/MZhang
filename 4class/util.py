@@ -5,6 +5,8 @@ import random
 import time
 import h5py
 import matplotlib.pyplot as plt
+import csv
+
 
 
 def cal_e(x, l, ws):
@@ -88,7 +90,7 @@ def print_mislabeled_images(X, y, p):
         
         # 为了不同模式，图片大小不一样而改变
         # plt.imshow(X[:,index].reshape(100,100,3), interpolation='nearest')
-        plt.imshow(X[index].reshape(100, 100))
+        plt.imshow(X[index].reshape(64, 64))
         
         plt.axis('off')
         plt.title("Prediction: " + str(p[index]) + " \n Class: " + str(y[index]))
@@ -96,9 +98,9 @@ def print_mislabeled_images(X, y, p):
         plt.hold
     plt.show()
 
-
+# 载入h5格式的数据集
 def load_data(train_filename, test_filename):
-    ########################## 从测试集中分离10%作为验证集
+    
     train_dataset = h5py.File(train_filename, "r")
     train_set_x_orig = np.array(train_dataset["train_set_x"][:])
     train_set_y_orig = np.array(train_dataset["train_set_y"][:])
@@ -106,7 +108,38 @@ def load_data(train_filename, test_filename):
     test_dataset = h5py.File(test_filename, "r")
     test_set_x_orig = np.array(test_dataset["test_set_x"][:])  # your test set features
     test_set_y_orig = np.array(test_dataset["test_set_y"][:])  # your test set labels
-    ########################
+
+    
+    train_set_y_orig = train_set_y_orig.reshape((1, train_set_y_orig.shape[0]))
+    test_set_y_orig = test_set_y_orig.reshape((1, test_set_y_orig.shape[0]))
+    
+    return train_set_x_orig, train_set_y_orig, test_set_x_orig, test_set_y_orig
+
+# CSV 转矩阵
+# 借助list，将csv中每一项append到list中，再进行 list-->array 转换
+def CSV_2_ndarray(csvFileName):
+    
+    csvFile = open(csvFileName, "r")
+    reader = csv.reader(csvFile)
+    label = []
+    data = []
+    for item in reader:
+        
+        temp_data = np.array(item[:-1]).reshape(64, 64)
+        temp_label = np.array(item[-1])
+        data.append(temp_data)
+        label.append(temp_label)
+
+    label = np.array(label)
+    data = np.array(data)
+        
+    return data, label
+
+# 载入 csv 的数据集
+def load_data_csv(train_filename, test_filename):
+    
+    train_set_x_orig, train_set_y_orig = CSV_2_ndarray(train_filename)
+    test_set_x_orig, test_set_y_orig = CSV_2_ndarray(test_filename)
     
     train_set_y_orig = train_set_y_orig.reshape((1, train_set_y_orig.shape[0]))
     test_set_y_orig = test_set_y_orig.reshape((1, test_set_y_orig.shape[0]))

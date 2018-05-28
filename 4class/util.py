@@ -93,11 +93,24 @@ def print_mislabeled_images(X, y, p):
         plt.imshow(X[index].reshape(64, 64))
         
         plt.axis('off')
-        plt.title("Prediction: " + str(p[index]) + " \n Class: " + str(y[index]))
+        
+        # 用Result函数求出每个label对应的文字结果
+        pResult = Result(p[index])
+        yResult = Result(y[index])
+        plt.title("P: " + pResult + " \n L: " + yResult)
         
         plt.hold
+        
     plt.show()
 
+# 求出label对应的文字结果
+def Result(softmaxres):
+    res = ['left', 'midle', 'right', 'point']
+    for i in range(softmaxres.shape[0]):
+        if softmaxres[i] == 1:
+            return res[i]
+    
+    
 # 载入h5格式的数据集
 def load_data(train_filename, test_filename):
     
@@ -114,6 +127,7 @@ def load_data(train_filename, test_filename):
     test_set_y_orig = test_set_y_orig.reshape((1, test_set_y_orig.shape[0]))
     
     return train_set_x_orig, train_set_y_orig, test_set_x_orig, test_set_y_orig
+
 
 # CSV 转矩阵
 # 借助list，将csv中每一项append到list中，再进行 list-->array 转换

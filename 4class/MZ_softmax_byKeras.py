@@ -155,7 +155,6 @@ if __name__ == '__main__':
     model = load_model('my_model_acc0.995.h5')
     score = model.evaluate(X_test, Y_test, verbose=0)
     
-    
     print('Test score:', score[0])
     print('Test accuracy:', score[1])
     
@@ -175,10 +174,8 @@ if __name__ == '__main__':
             else:
                 prediction[i][j] = 1
         
-        # print(prediction[i])
-        
-   
-    
+
+
     
     print_mislabeled_images(X_test, Y_test, prediction)       # 显示错误分类的图像
     
